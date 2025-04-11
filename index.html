@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Witch Hair Salon - Servicios profesionales de peluquería y venta de productos de calidad en Moa">
+    <title>Witch Hair Salon</title>
+    <style>
+        :root {
+            --color-negro: #000000;
+            --color-morado: #6a1b9a;
+            --color-blanco: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Serif', sans-serif;
+        }
+
+        body {
+            background-color: var(--color-negro);
+            color: var(--color-blanco);
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            padding: 80px 20px 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .logo {
+            width: 90px;
+            position: absolute;
+            left: 20px;
+            top: 15px;
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+
+        /* Bienvenida */
+        .bienvenida {
+            margin: 100px 0 50px;
+            padding: 0 20px;
+        }
+
+        .bienvenida h1 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        .bienvenida h2 {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        /* Servicios */
+        .servicios-titulo {
+            text-align: center;
+            margin: 40px 0;
+            font-size: 1.5rem;
+        }
+
+        .servicios-grid {
+            display: flex;
+            gap: 20px;
+            padding: 0 20px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .servicios-grid::-webkit-scrollbar {
+            display: none;
+        }
+
+        .servicio-card {
+            flex: 0 0 250px;
+            height: 300px;
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #1a1a1a;
+            cursor: pointer;
+            aspect-ratio: 3/4;
+        }
+
+        .servicio-imagen {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+            background: #2d2d2d;
+            transition: transform 0.3s ease;
+        }
+
+        .servicio-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 15px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+        }
+
+        .servicio-precio {
+            background: var(--color-morado);
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            display: inline-block;
+        }
+
+        /* Modal Galería */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1001;
+            padding: 20px;
+        }
+
+        .modal.abierto {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-contenido {
+            background: var(--color-negro);
+            width: 90%;
+            max-width: 1200px;
+            height: 90vh;
+            padding: 20px;
+            border-radius: 15px;
+            border: 2px solid var(--color-morado);
+            position: relative;
+        }
+
+        .galeria-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            height: calc(90vh - 100px);
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        .galeria-item {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            aspect-ratio: 1/1;
+        }
+
+        .galeria-imagen {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+            background: #2d2d2d;
+            transition: transform 0.3s ease;
+        }
+
+        .galeria-precio {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background: var(--color-morado);
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+        }
+
+        .cerrar-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            color: var(--color-blanco);
+            font-size: 1.5rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        /* Productos */
+        .productos-container {
+            padding: 40px 20px;
+            position: relative;
+        }
+
+        .productos-titulo {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 1.5rem;
+        }
+
+        .productos-navegacion {
+            position: relative;
+        }
+
+        .productos-grid {
+            display: flex;
+            gap: 20px;
+            padding: 0 20px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .productos-grid::-webkit-scrollbar {
+            display: none;
+        }
+
+        .producto-card {
+            flex: 0 0 250px;
+            height: 300px;
+            perspective: 1000px;
+            cursor: pointer;
+            aspect-ratio: 3/4;
+        }
+
+        .scroll-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--color-morado);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .scroll-btn:hover {
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .scroll-btn.prev {
+            left: 10px;
+        }
+
+        .scroll-btn.next {
+            right: 10px;
+        }
+
+        .producto-contenido {
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            position: relative;
+        }
+
+        .producto-card.active .producto-contenido {
+            transform: rotateY(180deg);
+        }
+
+        .producto-front,
+        .producto-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 10px;
+            overflow: hidden;
+            padding: 15px;
+        }
+
+        .producto-front {
+            background: #1a1a1a;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .producto-back {
+            background: var(--color-morado);
+            transform: rotateY(180deg);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .producto-imagen {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+            background: #2d2d2d;
+            border-radius: 8px;
+        }
+
+        /* Contactos */
+        .contacto-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--color-morado);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            z-index: 1000;
+            border: none;
+            transition: transform 0.3s ease;
+            font-weight: 600;
+        }
+
+        .contacto-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .contacto-info {
+            position: fixed;
+            top: -400px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.95);
+            padding: 25px;
+            border-radius: 15px;
+            width: 250px;
+            transition: all 0.3s ease;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+
+        .contacto-info.active {
+            top: 70px;
+        }
+
+        .social-vertical {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .social-vertical img {
+            width: 50px;
+            transition: transform 0.3s ease;
+        }
+
+        .social-vertical img:hover {
+            transform: scale(1.1);
+        }
+
+        .direccion {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            font-size: 0.9rem;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .galeria-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                width: 70px;
+                top: 10px;
+                left: 10px;
+            }
+            
+            .bienvenida {
+                margin: 80px 0 30px;
+            }
+            
+            .bienvenida h1 {
+                font-size: 1.5rem;
+            }
+            
+            .servicio-card,
+            .producto-card {
+                flex: 0 0 200px;
+                height: 250px;
+                aspect-ratio: 3/4;
+            }
+            
+            .producto-back p {
+                font-size: 0.9rem;
+            }
+            
+            .galeria-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .scroll-btn {
+                width: 35px;
+                height: 35px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .galeria-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            html {
+                overflow-x: hidden;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Contactos -->
+    <button class="contacto-btn" onclick="toggleContacto()">CONTACTAR</button>
+    <div class="contacto-info" id="contactoInfo">
+        <div class="social-vertical">
+            <h4>REDES SOCIALES</h4>
+            <a href="https://wa.me/+5359127860" target="_blank" rel="noopener noreferrer">
+                <img src="images/whatsapp-icon.png" alt="WhatsApp" loading="lazy">
+            </a>
+        </div>
+        <div class="direccion">
+            <h4>📍 DIRECCIÓN</h4>
+            <p>Edificio 30 Apartamento 5<br>Rolo Monterrey, Moa</p>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <img src="images/logo.png" alt="Logo Witch Hair Salon" class="logo" loading="lazy">
+        <div class="bienvenida">
+            <h1>Bienvenida a Witch Hair Salon</h1>
+            <h2>Ofrecemos servicios profesionales de peluquería y venta de productos</h2>
+        </div>
+    </header>
+
+    <!-- Servicios -->
+    <section class="servicios">
+        <h2 class="servicios-titulo">SERVICIOS</h2>
+        <div class="servicios-grid">
+            <div class="servicio-card" onclick="abrirGaleria()">
+                <img src="images/corte.jpg" alt="Corte de pelo profesional" class="servicio-imagen" loading="lazy">
+                <div class="servicio-info">
+                    <h3>Corte de Pelo</h3>
+                    <span class="servicio-precio">Desde 50 CUP</span>
+                </div>
+            </div>
+            
+            <div class="servicio-card">
+                <img src="images/tinte.jpg" alt="Tinte de cabello profesional" class="servicio-imagen" loading="lazy">
+                <div class="servicio-info">
+                    <h3>Tinte Profesional</h3>
+                    <span class="servicio-precio">300 CUP/OZ</span>
+                </div>
+            </div>
+            
+            <div class="servicio-card">
+                <img src="images/keratina.jpg" alt="Tratamiento de keratina" class="servicio-imagen" loading="lazy">
+                <div class="servicio-info">
+                    <h3>Tratamiento de Keratina</h3>
+                    <span class="servicio-precio">300 CUP/OZ</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal Galería -->
+    <div class="modal" id="galeriaModal">
+        <div class="modal-contenido">
+            <button class="cerrar-modal" onclick="cerrarGaleria()">&times;</button>
+            <h2 style="text-align: center; margin-bottom: 20px; color: var(--color-morado)">Galería de Cortes</h2>
+            <div class="galeria-grid">
+                <div class="galeria-item">
+                    <img src="images/corte1.jpg" alt="Corte Bob" class="galeria-imagen" loading="lazy">
+                    <span class="galeria-precio">50 CUP</span>
+                </div>
+                <div class="galeria-item">
+                    <img src="images/corte2.jpg" alt="Corte Pixie" class="galeria-imagen" loading="lazy">
+                    <span class="galeria-precio">55 CUP</span>
+                </div>
+                <div class="galeria-item">
+                    <img src="images/corte3.jpg" alt="Corte Capas" class="galeria-imagen" loading="lazy">
+                    <span class="galeria-precio">60 CUP</span>
+                </div>
+                <div class="galeria-item">
+                    <img src="images/corte4.jpg" alt="Corte Undercut" class="galeria-imagen" loading="lazy">
+                    <span class="galeria-precio">65 CUP</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Productos -->
+    <section class="productos-container">
+        <h2 class="productos-titulo">PRODUCTOS EN VENTA</h2>
+        <div class="productos-navegacion">
+            <button class="scroll-btn prev" onclick="scrollProductos(-1)">&#10094;</button>
+            <button class="scroll-btn next" onclick="scrollProductos(1)">&#10095;</button>
+            <div class="productos-grid">
+                <!-- Producto 1 -->
+                <div class="producto-card" onclick="toggleProducto(this)">
+                    <div class="producto-contenido">
+                        <div class="producto-front">
+                            <img src="images/producto1.jpg" alt="Shampoo reparador" class="producto-imagen" loading="lazy">
+                        </div>
+                        <div class="producto-back">
+                            <p class="precio">250 CUP</p>
+                            <p>Shampoo reparador para cabello dañado con queratina y vitaminas</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Producto 2 -->
+                <div class="producto-card" onclick="toggleProducto(this)">
+                    <div class="producto-contenido">
+                        <div class="producto-front">
+                            <img src="images/producto2.jpg" alt="Acondicionador nutritivo" class="producto-imagen" loading="lazy">
+                        </div>
+                        <div class="producto-back">
+                            <p class="precio">200 CUP</p>
+                            <p>Acondicionador con aceite de argán y protección térmica</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Producto 3 -->
+                <div class="producto-card" onclick="toggleProducto(this)">
+                    <div class="producto-contenido">
+                        <div class="producto-front">
+                            <img src="images/producto3.jpg" alt="Spray fijador" class="producto-imagen" loading="lazy">
+                        </div>
+                        <div class="producto-back">
+                            <p class="precio">150 CUP</p>
+                            <p>Spray fijador profesional de larga duración sin residuos</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Producto 4 -->
+                <div class="producto-card" onclick="toggleProducto(this)">
+                    <div class="producto-contenido">
+                        <div class="producto-front">
+                            <img src="images/producto4.jpg" alt="Mascarilla capilar" class="producto-imagen" loading="lazy">
+                        </div>
+                        <div class="producto-back">
+                            <p class="precio">300 CUP</p>
+                            <p>Mascarilla reconstructora con keratina y colágeno</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Producto 5 -->
+                <div class="producto-card" onclick="toggleProducto(this)">
+                    <div class="producto-contenido">
+                        <div class="producto-front">
+                            <img src="images/producto5.jpg" alt="Aceite nutritivo" class="producto-imagen" loading="lazy">
+                        </div>
+                        <div class="producto-back">
+                            <p class="precio">180 CUP</p>
+                            <p>Aceite de argán puro para puntas abiertas y brillo intenso</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Producto 6 -->
+                <div class="producto-card" onclick="toggleProducto(this)">
+                    <div class="producto-contenido">
+                        <div class="producto-front">
+                            <img src="images/producto6.jpg" alt="Tinte profesional" class="producto-imagen" loading="lazy">
+                        </div>
+                        <div class="producto-back">
+                            <p class="precio">400 CUP</p>
+                            <p>Tinte permanente sin amoníaco con protección capilar</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; <span id="current-year"></span> Witch Hair Salon. Todos los derechos reservados</p>
+    </footer>
+
+    <script>
+        // Año dinámico
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // Toggle contactos
+        function toggleContacto() {
+            const contacto = document.getElementById('contactoInfo');
+            contacto.classList.toggle('active');
+        }
+
+        // Cerrar contactos al hacer click fuera
+        document.addEventListener('click', function(e) {
+            const contacto = document.getElementById('contactoInfo');
+            const btn = document.querySelector('.contacto-btn');
+            if (!contacto.contains(e.target) && !btn.contains(e.target)) {
+                contacto.classList.remove('active');
+            }
+        });
+
+        // Toggle productos
+        function toggleProducto(card) {
+            event.stopPropagation();
+            card.classList.toggle('active');
+        }
+
+        // Galería
+        function abrirGaleria() {
+            document.getElementById('galeriaModal').classList.add('abierto');
+        }
+
+        function cerrarGaleria() {
+            document.getElementById('galeriaModal').classList.remove('abierto');
+        }
+
+        // Cerrar modal al hacer click fuera
+        window.onclick = function(event) {
+            const modal = document.getElementById('galeriaModal');
+            if (event.target === modal) {
+                cerrarGaleria();
+            }
+        }
+
+        // Scroll productos
+        function scrollProductos(direction) {
+            const grid = document.querySelector('.productos-grid');
+            const scrollAmount = 270;
+            grid.scrollBy({
+                left: direction * scrollAmount,
+                behavior: 'smooth'
+            });
+        }
+    </script>
+</body>
+</html>
