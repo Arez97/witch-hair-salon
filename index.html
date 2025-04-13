@@ -632,7 +632,30 @@
             outline-offset: 2px;
             border-radius: 2px;
         }
-    </style>
+    
+/* Corrección para las tarjetas informativas */
+.servicio-card.info-ajuste {
+    aspect-ratio: auto;
+    height: auto;
+}
+
+.servicio-card.info-ajuste .servicio-imagen,
+.informacion.adicional-imagen {
+    width: 100%;
+    max-height: 250px;
+    object-fit: cover;
+    display: block;
+}
+
+/* Ajuste para el texto debajo de la imagen */
+.servicio-card.info-ajuste .servicio-info {
+    position: static;
+    background: transparent;
+    padding: 1rem;
+    text-align: left;
+}
+
+</style>
 </head>
 <body>
     <button class="contacto-btn" onclick="toggleContacto()" aria-label="Mostrar información de contacto">CONTACTAR</button>
@@ -720,8 +743,8 @@ onclick="abrirGaleria('keratina')">
             <h2>Cortes de Pelo</h2>
             <div class="galeria-grid">
                 <div class="galeria-item">
-                    <img src="images/corte1.jpg" alt="Corte Bob" class="galeria-imagen" loading="lazy">
-                    <span class="galeria-nombre">Corte Bob</span>
+                    <img src="images/corte1.jpg" alt="Corte en capas" class="galeria-imagen" loading="lazy">
+                    <span class="galeria-nombre">Corte en capas</span>
                 </div>
                 <div class="galeria-item">
                     <img src="images/corte2.jpg" alt="Corte Pixie" class="galeria-imagen" loading="lazy">
@@ -737,12 +760,12 @@ onclick="abrirGaleria('keratina')">
             <h2>Galería de Tintes</h2>
             <div class="galeria-grid">
                 <div class="galeria-item">
-                    <img src="images/tinte1.jpg" alt="Rubio Cenizo" class="galeria-imagen" loading="lazy">
-                    <span class="galeria-nombre">Rubio Cenizo - Cabellos claros</span>
+                    <img src="images/tinte1.jpg" alt="Negro" class="galeria-imagen" loading="lazy">
+                    <span class="galeria-nombre">Negro - Cabellos oscuros</span>
                 </div>
                 <div class="galeria-item">
-                    <img src="images/tinte2.jpg" alt="Cobre Intenso" class="galeria-imagen" loading="lazy">
-                    <span class="galeria-nombre">Cobre Intenso - Cabellos oscuros</span>
+                    <img src="images/tinte2.jpg" alt="Castaño Oscuro" class="galeria-imagen" loading="lazy">
+                    <span class="galeria-nombre">Castaño oscuro - Cabellos oscuros</span>
                 </div>
             </div>
         </div>
@@ -754,12 +777,12 @@ onclick="abrirGaleria('keratina')">
             <h2>Tratamientos de Keratina</h2>
             <div class="galeria-grid">
                 <div class="galeria-item">
-                    <img src="images/keratina1.jpg" alt="Keratina Brasileña" class="galeria-imagen" loading="lazy">
-                    <span class="galeria-nombre">Brasileña - Cabello grueso</span>
+                    <img src="images/keratina1.jpg" alt="Revolution" class="galeria-imagen" loading="lazy">
+                    <span class="galeria-nombre">Revolution</span>
                 </div>
                 <div class="galeria-item">
-                    <img src="images/keratina2.jpg" alt="Keratina Japonesa" class="galeria-imagen" loading="lazy">
-                    <span class="galeria-nombre">Japonesa - Cabello fino</span>
+                    <img src="images/keratina2.jpg" alt="Keramier con formol" class="galeria-imagen" loading="lazy">
+                    <span class="galeria-nombre">Keramier con formol</span>
                 </div>
             </div>
         </div>
@@ -853,21 +876,24 @@ onclick="abrirGaleria('keratina')">
         <section class="servicios" aria-labelledby="mano-obra-titulo">
     <h2 class="servicios-titulo" id="mano-obra-titulo">Información Adicional</h2>
     <div class="servicios-grid">
-        <div class="card servicio-card" style="height: auto;">
-            <div class="servicio-info">
-                <h3>Mano de Obra</h3>
-                <p>Keratina: <strong>300 CUP</strong></p>
-                <p>Tinte: <strong>300 CUP</strong></p>
-                <p>Decoloración: <strong>350 CUP</strong></p>
-            </div>
-        </div>
-        <div class="card servicio-card" style="height: auto;">
-            <div class="servicio-info">
-                <h3>Costos Adicionales</h3>
-                <p>Horas extra: <strong>200 CUP</strong></p>
-                <p>Domicilio: <strong>100 CUP</strong></p>
-            </div>
-        </div>
+        <div class="card servicio-card info-ajuste">
+    <img src="images/manoobra.jpg" alt="mano de obra" class="servicio-imagen informacion adicional-imagen" loading="lazy">
+    <div class="servicio-info">
+        <h3>Servicio</h3>
+        <p>-Keratina: <strong>300 CUP</strong></p>
+        <p>-Tinte: <strong>300 CUP</strong></p>
+        <p>-Decoloración: <strong>350 CUP</strong></p>
+    </div>
+</div>
+
+<div class="card servicio-card info-ajuste">
+    <img src="images/costos.jpg" alt="costos adicionales" class="servicio-imagen informacion adicional-imagen" loading="lazy">
+    <div class="servicio-info">
+        <h3>Agregado</h3>
+        <p>Horas extra: <strong>200 CUP</strong></p>
+        <p>Domicilio: <strong>100 CUP</strong></p>
+    </div>
+</div>
     </div>
 </section>
     </section>
