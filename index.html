@@ -1045,17 +1045,14 @@ onclick="abrirGaleria('keratina')">
 </div>
 
 <script>
-  async function cargarDiasEspeciales() {
-    const respuesta = await fetch('dias_especiales.json');
-    const datos = await respuesta.json();
-    return datos.dias || [];
-  }
+  let reservas = {};
 
   document.addEventListener('DOMContentLoaded', async function () {
+    reservas = await fetch('reservas.json').then(r => r.json()).catch(() => ({}));
+    const diasEspeciales = await fetch('dias_especiales.json').then(r => r.json()).then(d => d.dias || []).catch(() => []);
     const calendarEl = document.getElementById('calendario');
     if (!calendarEl) return;
 
-    const diasEspeciales = await cargarDiasEspeciales();
     const diasBloqueados = generarDiasBloqueados().concat(diasEspeciales);
 
     const calendar = new FullCalendar.Calendar(calendarEl, {
@@ -1115,10 +1112,19 @@ onclick="abrirGaleria('keratina')">
 
   function mostrarTurnosDisponibles(fecha) {
     const horarios = ['7:00 a.m.', '1:00 p.m.'];
+    const ocupados = reservas[fecha] || [];
+    const disponibles = horarios.filter(h => !ocupados.includes(h));
+
+    if (disponibles.length === 0) {
+      alert('No hay horarios disponibles para este día.');
+      return;
+    }
+
     document.getElementById('modal-fecha').textContent = `Seleccione un horario para el ${fecha}`;
-    document.getElementById('modal-opciones').innerHTML = horarios.map(h =>
+    document.getElementById('modal-opciones').innerHTML = disponibles.map(h =>
       `<button onclick="window.open('https://wa.me/+5359127860?text=Hola,%20quisiera%20un%20turno%20para%20el%20${fecha}%20a%20las%20${h}', '_blank')"
-        style='margin: 0.5rem; padding: 0.5rem 1rem; border-radius: 1rem; background: var(--color-secundario); color: white; border: none; font-weight: bold;'>${h}</button>`).join('');
+        style='margin: 0.5rem; padding: 0.5rem 1rem; border-radius: 1rem; background: var(--color-secundario); color: white; border: none; font-weight: bold;'>${h}</button>`
+    ).join('');
     document.getElementById('modal-turnos').style.display = 'flex';
   }
 
