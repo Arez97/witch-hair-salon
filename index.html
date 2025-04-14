@@ -1010,7 +1010,124 @@ onclick="abrirGaleria('keratina')">
 </section>
     </section>
 
-    <footer class="footer">
+    
+<!-- Calendario de turnos -->
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+
+<style>
+  .fc .fc-daygrid-day.fc-day-today {
+    position: relative;
+  }
+  .fc .fc-daygrid-day.fc-day-today::after {
+    content: "";
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 8px;
+    height: 8px;
+    background: black;
+    border-radius: 50%;
+  }
+</style>
+
+<section class="calendario-container" aria-labelledby="calendario-turnos-titulo">
+  <h2 class="servicios-titulo" id="calendario-turnos-titulo">Ver disponibilidad</h2>
+  <div id="calendario" style="max-width: 900px; margin: 2rem auto; background: #1a1a1a; padding: 1rem; border-radius: 12px;"></div>
+</section>
+
+<div id="modal-turnos" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:1000; align-items:center; justify-content:center;">
+  <div style="background:#1a1a1a; padding:2rem; border-radius:12px; max-width:90%; text-align:center; color:white;">
+    <h2 id="modal-fecha"></h2>
+    <div id="modal-opciones" style="margin-top:1rem;"></div>
+    <button onclick="cerrarModal()" style="margin-top:1rem; background:var(--color-secundario); color:white; border:none; padding:0.5rem 1rem; border-radius:1rem; cursor:pointer;">Cerrar</button>
+  </div>
+</div>
+
+<script>
+  async function cargarDiasEspeciales() {
+    const respuesta = await fetch('dias_especiales.json');
+    const datos = await respuesta.json();
+    return datos.dias || [];
+  }
+
+  document.addEventListener('DOMContentLoaded', async function () {
+    const calendarEl = document.getElementById('calendario');
+    if (!calendarEl) return;
+
+    const diasEspeciales = await cargarDiasEspeciales();
+    const diasBloqueados = generarDiasBloqueados().concat(diasEspeciales);
+
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: 'dayGridMonth',
+      locale: 'es',
+      headerToolbar: {
+        left: 'prev,next',
+        center: 'title',
+        right: ''
+      },
+      selectable: true,
+      validRange: function(nowDate) {
+        return { start: nowDate };
+      },
+      dateClick: function(info) {
+        const hoy = new Date().toISOString().split('T')[0];
+        if (!diasBloqueados.includes(info.dateStr) && info.dateStr >= hoy) {
+          mostrarTurnosDisponibles(info.dateStr);
+        } else {
+          alert('Este día no está disponible para turnos.');
+        }
+      },
+      dayCellDidMount: function(info) {
+        const fecha = info.date.toISOString().slice(0, 10);
+        const hoy = new Date().toISOString().slice(0, 10);
+        if (diasBloqueados.includes(fecha) || fecha < hoy) {
+          info.el.style.backgroundColor = 'red';
+          info.el.style.color = '#fff';
+        } else {
+          info.el.style.backgroundColor = '#4caf50';
+        }
+      }
+    });
+
+    calendar.render();
+  });
+
+  function generarDiasBloqueados() {
+    const hoy = new Date();
+    const dias = [];
+    const year = hoy.getFullYear();
+    const month = hoy.getMonth();
+
+    for (let i = 1; i <= 31; i++) {
+      const fecha = new Date(year, month, i);
+      if (fecha.getMonth() !== month) continue;
+
+      const dia = fecha.getDay();
+      const semana = Math.floor((i - 1) / 7);
+
+      if ((dia === 0 || dia === 6) && semana % 2 === 1) {
+        dias.push(fecha.toISOString().slice(0, 10));
+      }
+    }
+    return dias;
+  }
+
+  function mostrarTurnosDisponibles(fecha) {
+    const horarios = ['7:00 a.m.', '1:00 p.m.'];
+    document.getElementById('modal-fecha').textContent = `Seleccione un horario para el ${fecha}`;
+    document.getElementById('modal-opciones').innerHTML = horarios.map(h =>
+      `<button onclick="window.open('https://wa.me/+5359127860?text=Hola,%20quisiera%20un%20turno%20para%20el%20${fecha}%20a%20las%20${h}', '_blank')"
+        style='margin: 0.5rem; padding: 0.5rem 1rem; border-radius: 1rem; background: var(--color-secundario); color: white; border: none; font-weight: bold;'>${h}</button>`).join('');
+    document.getElementById('modal-turnos').style.display = 'flex';
+  }
+
+  function cerrarModal() {
+    document.getElementById('modal-turnos').style.display = 'none';
+  }
+</script>
+
+<footer class="footer">
         <p>&copy; <span id="current-year"></span> Witch Hair Salon. Todos los derechos reservados</p>
     </footer>
 
