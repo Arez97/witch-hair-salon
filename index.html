@@ -80,11 +80,9 @@
 
         @media (prefers-reduced-motion: no-preference) {
             .logo {
-                animation: float 4s ease-in-out infinite;
-            }
+}
             
-            @keyframes float {
-                0%, 100% { transform: translateY(0); }
+            
                 50% { transform: translateY(-10px); }
             }
         }
@@ -732,6 +730,34 @@
     }
 }
 
+
+.ver-galeria-label {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  background: var(--color-secundario);
+  color: white;
+  padding: 0.3rem 0.9rem;
+  border-radius: 1.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  z-index: 10;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.ver-mas-producto {
+  position: absolute;
+  top: 0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  font-size: 0.7rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 1rem;
+  z-index: 5;
+  pointer-events: none;
+}
 </style>
 </head>
 <body>
@@ -762,6 +788,7 @@
         <h2 class="servicios-titulo" id="servicios-titulo">Nuestros Servicios</h2>
         <div class="servicios-grid">
             <div class="servicio-card card" onclick="abrirGaleria('cortes')">
+<span class="ver-galeria-label">Ver galería</span>
                 <img src="images/corte.jpg" alt="Corte de pelo" class="servicio-imagen" loading="lazy">
                 <div class="servicio-info">
                     <h3>Corte de Pelo</h3>
@@ -771,6 +798,7 @@
             
             <div class="servicio-card card" 
 onclick="abrirGaleria('tinte')">
+<span class="ver-galeria-label">Ver galería</span>
                 <img src="images/tinte.jpg" alt="Tinte de cabello profesional" class="servicio-imagen" loading="lazy" width="250" height="300">
                 <div class="servicio-info">
                     <h3>Tinte</h3>
@@ -780,6 +808,7 @@ onclick="abrirGaleria('tinte')">
               
             <div class="servicio-card card" 
 onclick="abrirGaleria('keratina')">
+<span class="ver-galeria-label">Ver galería</span>
                 <img src="images/keratina.jpg" alt="Tratamiento de keratina" class="servicio-imagen" loading="lazy" width="250" height="300">
                 <div class="servicio-info">
                     <h3>Keratina</h3>
@@ -874,6 +903,7 @@ onclick="abrirGaleria('keratina')">
                 <div class="producto-card card" onclick="toggleProducto(this)">
                     <div class="producto-contenido">
                         <div class="producto-front">
+<span class="ver-mas-producto">Ver más</span>
                             <img src="images/producto1.jpg" alt="Shampoo reparador" class="producto-imagen" loading="lazy">
                         </div>
                         <div class="producto-back">
@@ -887,6 +917,7 @@ onclick="abrirGaleria('keratina')">
                 <div class="producto-card card" onclick="toggleProducto(this)">
                     <div class="producto-contenido">
                         <div class="producto-front">
+<span class="ver-mas-producto">Ver más</span>
                             <img src="images/producto2.jpg" alt="Acondicionador nutritivo" class="producto-imagen" loading="lazy">
                         </div>
                         <div class="producto-back">
@@ -900,6 +931,7 @@ onclick="abrirGaleria('keratina')">
                 <div class="producto-card card" onclick="toggleProducto(this)">
                     <div class="producto-contenido">
                         <div class="producto-front">
+<span class="ver-mas-producto">Ver más</span>
                             <img src="images/producto3.jpg" alt="Spray fijador" class="producto-imagen" loading="lazy">
                         </div>
                         <div class="producto-back">
@@ -913,6 +945,7 @@ onclick="abrirGaleria('keratina')">
                 <div class="producto-card card" onclick="toggleProducto(this)">
                     <div class="producto-contenido">
                         <div class="producto-front">
+<span class="ver-mas-producto">Ver más</span>
                             <img src="images/producto4.jpg" alt="Mascarilla capilar" class="producto-imagen" loading="lazy">
                         </div>
                         <div class="producto-back">
@@ -926,6 +959,7 @@ onclick="abrirGaleria('keratina')">
                 <div class="producto-card card" onclick="toggleProducto(this)">
                     <div class="producto-contenido">
                         <div class="producto-front">
+<span class="ver-mas-producto">Ver más</span>
                             <img src="images/producto5.jpg" alt="Aceite nutritivo" class="producto-imagen" loading="lazy">
                         </div>
                         <div class="producto-back">
@@ -939,6 +973,7 @@ onclick="abrirGaleria('keratina')">
                 <div class="producto-card card" onclick="toggleProducto(this)">
                     <div class="producto-contenido">
                         <div class="producto-front">
+<span class="ver-mas-producto">Ver más</span>
                             <img src="images/producto6.jpg" alt="Tinte profesional" class="producto-imagen" loading="lazy">
                         </div>
                         <div class="producto-back">
